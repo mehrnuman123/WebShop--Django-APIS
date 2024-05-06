@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Responsive Div</title>
+    <style>
+        /* Set the div's height and width using vh and vw units */
+        .head-div {
+            height: 30vh;
+            /* 70% of the viewport height */
+            width: 80vw;
+            /* 80% of the viewport width */
+            background-color: white;
+            /* Some background color for visibility */
+            /* border: solid 1px black;*/
+            border-radius: 6px;
+            display: flex;
+            justify-content: center;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            align-items: center;
+            margin: auto;
+            /* Center the div horizontally */
+
+            padding: 10px;
+            /* Add padding for better visibility */
+            box-sizing: border-box;
+            /* Include padding and border in the div's total size */
+        }
+
+        .info-div {
+            height: 80vh;
+            /* 70% of the viewport height */
+            width: 80vw;
+            /* 80% of the viewport width */
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            margin: auto;
+            margin-bottom: 1rem;
+            padding: 20px;
+            /* Add padding for better visibility */
+            box-sizing: border-box;
+            /* Include padding and border in the div's total size */
+            display: flex;
+            padding-top: 1rem;
+            gap: 3rem;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+        }
+
+        /* Optional: Add more styles for better appearance */
+        body {
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+
+        h1 {
+            color: blueviolet;
+        }
+
+        .dynmic-info {
+            height: 20vh;
+            width: 70vw;
+            display: flex;
+            justify-content: start;
+            background-color: white;
+            border: solid 1px black;
+            border-radius: 10px;
+        }
+
+        .goto-shop {
+            height: 20vh;
+            width: 70vw;
+            display: flex;
+            justify-content: center;
+            background-color: white;
+            border: solid 1px black;
+            border-radius: 10px;
+        }
+
+        .db-info {
+            height: 20vh;
+            width: 70vw;
+            display: flex;
+            justify-content: start;
+            background-color: white;
+            border: solid 1px black;
+            border-radius: 10px;
+        }
+    </style>
+</head>
+
+<body>
+    <div style="display: flex;flex-direction: column;gap: 2rem;margin-top: 10rem;">
+        <div class="head-div">
+            <h1>Wellcome !! We are happy to see you here</h1>
+        </div>
+        <div class="info-div">
+            <div style="display: flex;flex-direction: column;justify-content:space-around;gap: 20px;">
+                <div class="dynmic-info">
+                    <div style="margin: 12px;">
+                        <h2>
+                            Our page has {{total_sell_items}} items, with {{items_added_last_week}} items added last
+                            week, {{active_users}} active users.
+
+                        </h2>
+                    </div>
+                </div>
+                <div class="goto-shop">
+                    <div style="margin: 12px;display: flex;justify-content: center;align-items: center;">
+                        <h2 id="populate-db" onclick="populateDB()"
+                            style="text-decoration: underline;color: blueviolet;cursor: pointer;">
+                            Delete all items and generate 6 users and 30 items.
+
+                        </h2>
+                        <div id="message-container" style="display: none;">
+                            <h2>Database Generated !!</h2>
+                        </div>
+                        <div id="working" style="display: none;">
+                            <h2>Working...</h2>
+                        </div>
+                        <script>
+                            function populateDB() {
+                                const working = document.getElementById('working');
+                                const h2Element = document.getElementById('populate-db');
+                                h2Element.style.display = 'none'
+                                working.style.display = 'block'
+                                // Send the POST request using the fetch API
+                                fetch('http://127.0.0.1:8000/api/populate_db/', {
+                                    method: 'POST',
+                                    headers: {
+                                        'Content-Type': 'application/json',
+                                    }
+                                })
+                                    .then(response => response.json())
+                                    .then(data => {
+                                        if (data) {
+                                            const h2Element = document.getElementById('populate-db');
+                                            const h22Element = document.getElementById('message-container');
+                                            const working = document.getElementById('working');
+                                            working.style.display = 'none'
+                                            h2Element.style.display = 'none';
+                                            h22Element.style.display = 'block'
+                                        }
+
+                                        const container = document.getElementById('message-container');
+
+                                        // Create a new paragraph element to display the message
+                                        const messageParagraph = document.createElement('p');
+
+                                        // Set the message as the content of the paragraph element
+                                        messageParagraph.textContent = 'Database Generated';
+                                        // Perform any actions with the response data, if needed
+                                    })
+                                    .catch(error => {
+                                        console.error('Error:', error);
+                                        // Handle any errors that occurred during the request
+                                    });
+                            }
+                        </script>
+                    </div>
+                </div>
+                <div class="db-info">
+                    <div style="margin: 12px;">
+                        <h2>
+                            By going to the store you accept our terms
+                            and conditions. <a href="http://127.0.0.1:3000/shop">Go to Shop</a>
+
+                        </h2>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+</body>
+
+</html>
